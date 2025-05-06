@@ -27,7 +27,7 @@
             <div v-for="movie in results" :key="movie.id" class="card mb-3 text-start">
                 <div class="card-body">
                     <h5 class="card-title">{{ movie.title }} ({{ movie.year }})</h5>
-                    <p class="card-text">⭐ {{ movie.rating }} ({{ movie.num_votes }} votes)</p>
+                    <p class="card-text">⭐ {{ movie.rating }} ({{ movie.num_votes.toLocaleString('it-IT')  }} votes)</p>
                     <p><strong>Directors:</strong> {{ movie.directors.join(', ') }}</p>
                     <p><strong>Actors:</strong> {{ movie.actors.join(', ') }}</p>
                 </div>
