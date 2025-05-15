@@ -12,4 +12,4 @@ RUN pip install --upgrade pip \
 
 RUN apt-get update && apt-get install -y wget unzip postgresql-client && apt-get clean
 
-CMD ["sh", "scripts/startup.sh"]
+CMD ["bash", "scripts/startup.sh"]

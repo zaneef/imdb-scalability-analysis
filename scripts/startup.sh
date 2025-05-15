@@ -11,12 +11,18 @@ cd data
 # gunzip -f *.tsv.gz
 cd ..
 
-if [ ! -f /app/.db_populated ]; then
-  echo "Populating database (this could a while)..."
-  python -m app.populate_db
-  touch /app/.db_populated
+echo "Checking if database is already populated..."
+export PGPASSWORD="$POSTGRES_PASSWORD"
+exists=$(psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -t -c "SELECT COUNT(*) FROM movies;" 2>/dev/null || echo "error")
+exists=$(echo "$exists" | xargs)
+
+echo "Found $exists rows in 'movies' table."
+
+if echo "$exists" | grep -Eq '^[0-9]+$' && [ "$exists" -gt 100 ]; then
+  echo "✅ Database already populated. Skipping import."
 else
-  echo "Database already populated. Skipping."
+  echo "🧱 Populating database..."
+  python -m app.populate_db
 fi
 
 echo "Starting API server..."
