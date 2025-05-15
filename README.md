@@ -1,7 +1,7 @@
 # IMDb Scalability Analysis Web App
 
 ## 📚 Project Overview
-This project was developed for the "Software Performance and Scalability" course and demonstrates the design, deployment, and performance analysis of a scalable web application. The system loads and serves movie data from the IMDb dataset through a FastAPI backend and a PostgreSQL database. Performance is measured and modeled using tools such as Locust, JMeter, and JMT.
+This project was developed for the "Software Performance and Scalability" course and demonstrates the design, deployment, and performance analysis of a scalable web application. The system loads and serves movie data from the IMDb dataset through a FastAPI backend and a PostgreSQL database.
 
 ---
 
