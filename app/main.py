@@ -24,7 +24,7 @@ def read_index(request: Request):
 
 @app.get("/movies/", response_model=list[schemas.MovieOut])
 def search_movies(title: str, db: Session = Depends(get_db)):
-    movies = crud.get_movie_by_title(db, title)
+    movies = crud.get_movie_by_title(db, title.strip('"'))
     if not movies:
         raise HTTPException(status_code=404, detail="Nessun film trovato")
     

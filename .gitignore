@@ -175,3 +175,4 @@ cython_debug/
 
 *.tsv
 imdb_data.zip
+.db_populated
