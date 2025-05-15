@@ -1,101 +1,83 @@
-# README.md
+# IMDb Scalability Analysis Web App
 
-## 🎬 IMDb Scalability Analysis Web App
-This project is part of the "Software Performance and Scalability" course and is designed to:
-- Build a FastAPI-based web application to search movie information from the IMDb dataset.
-- Simulate realistic traffic based on rating frequency.
-- Test and analyze the system's scalability using queueing theory and tools.
+## 📚 Project Overview
+This project was developed for the "Software Performance and Scalability" course and demonstrates the design, deployment, and performance analysis of a scalable web application. The system loads and serves movie data from the IMDb dataset through a FastAPI backend and a PostgreSQL database.
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Project Structure
 ```
-.
-├── app/                  # Application logic
-│   ├── main.py           # FastAPI entry point
-│   ├── models.py         # SQLAlchemy models
-│   ├── schemas.py        # Pydantic response models
-│   ├── crud.py           # Database queries
-│   ├── database.py       # DB connection setup
-│   └── populate_db.py    # Script to import IMDb TSV files into the DB
+imdb-scalability-analysis/
+├── app/                          # FastAPI backend
+│   ├── main.py                   # Entry point
+│   ├── models.py                 # SQLAlchemy models
+│   ├── schemas.py                # Pydantic schemas for API
+│   ├── crud.py                   # Database access logic
+│   ├── database.py               # DB engine and session setup
+│   └── populate_db.py            # Loads IMDb TSV into DB
 │
-├── data/                 # Data files
-│   ├── imdb_data.zip     # Contains all TSV files compressed
-│   └── [*.tsv]           # TSV files extracted manually
+├── data/                         # TSV files (downloaded at runtime)
+│   ├── title.basics.tsv
+│   ├── title.ratings.tsv
+│   ├── title.principals.tsv
+│   └── name.basics.tsv
 │
-├── requirements.txt      # Python dependencies
-├── template_env          # Template for environment variables
-├── .env                  # (To be created from template_env)
-└── README.md             # This file
+├── scripts/                      # Startup and automation scripts
+│   └── startup.sh                # Startup script for Docker container
+│
+├── jmeter/                       # Load test project for Step 3
+│   ├── movies.jmx                # JMeter test plan
+│   └── queries.csv               # 10k query dataset
+│
+├── Dockerfile                   # Dockerfile for the webapp container
+├── docker-compose.yml           # Compose file to run app + db containers
+├── requirements.txt             # Python dependencies
+├── .env.template                # Environment variable template
+├── .dockerignore                # Excludes sensitive files from build
+├── generate_queries.py          # Script to create weighted random queries
+└── README.md                    # This file
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ How to Run the Project
 
-### 1. 🧱 Clone the repository
+### 1. Copy and Edit the Environment File
 ```bash
-git clone https://github.com/zaneef/imdb-scalability-analysis.git
-cd imdb-scalability-analysis
+cp .env.template .env
 ```
+You may edit the `.env` file if needed (not required with Docker defaults).
 
-### 2. 🗃️ Unzip IMDb data
-Inside the `data/` directory, you will find a compressed file `imdb_data.zip`.
-Extract its contents to the same directory.
-
-### 3. 🐘 Start PostgreSQL with Docker
+### 2. Build and Launch the System
 ```bash
-docker run --name imdb-postgres \
-  -e POSTGRES_PASSWORD=admin \
-  -e POSTGRES_DB=imdb \
-  -p 5432:5432 -d postgres
+docker-compose up --build
 ```
-You may customize the credentials and database name.
+This will:
+- Download IMDb TSV datasets
+- Extract and load them into PostgreSQL
+- Launch the API server on http://localhost:8000
 
-### 4. 📝 Configure Environment
-Rename the provided `template_env` to `.env`:
-```bash
-cp template_env .env
-```
-Then edit `.env` and fill in the required values as defined above:
-```
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=admin
-POSTGRES_DB=imdb
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-```
+---
 
-### 5. 🐍 Create and activate Python virtual environment
-```bash
-python -m venv venv
-./venv/Scripts/activate     # On Windows
-source venv/bin/activate   # On Unix/macOS
+## 🔍 API Overview
+Visit the Swagger documentation at:
 ```
-
-### 6. 📦 Install dependencies
-```bash
-pip install -r requirements.txt
+http://localhost:8000/docs
 ```
-
-### 7. 🧩 Populate the database
-Make sure the `.tsv` files are extracted in `data/`, then run:
-```bash
-python -m app.populate_db
+Example usage:
 ```
-This script will read from the TSV files and load a subset of the IMDb dataset into the PostgreSQL database.
-
-### 8. 🚀 Run the web application
-```bash
-uvicorn app.main:app --reload
+GET /movies/?title=Matrix
 ```
-Visit:
-- Swagger Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
-- Example Query: `/movies/?title=matrix`
+Returns a JSON with title, year, rating, directors, and actors.
 
 ---
 
 ## 📄 License
 MIT License
+
+---
+
+## 🙌 Credits
+Developed as part of "Software Performance and Scalability" coursework at Ca' Foscari University.
 
 ---

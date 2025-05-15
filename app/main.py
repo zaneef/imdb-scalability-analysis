@@ -22,6 +22,10 @@ def get_db():
 def read_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/ping")
+def pong(request: Request):
+    return {"response": "pong"}
+
 @app.get("/movies/", response_model=list[schemas.MovieOut])
 def search_movies(title: str, db: Session = Depends(get_db)):
     movies = crud.get_movie_by_title(db, title.strip('"'))
