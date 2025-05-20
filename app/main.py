@@ -28,7 +28,7 @@ def pong(request: Request):
 
 @app.get("/movies/", response_model=list[schemas.MovieSchema])
 def search_movies(title: str, db: Session = Depends(get_db)):
-    movies = crud.cache_get_movie_by_title(db, title.strip('"'))
+    movies = crud.get_movie_by_title(db, title.strip('"'))
     if not movies:
         raise HTTPException(status_code=404, detail="No film found.")
     return movies
