@@ -3,10 +3,10 @@ set -e
 echo "Downloading IMDb data..."
 mkdir -p data
 cd data
-# wget -q https://datasets.imdbws.com/title.basics.tsv.gz
-# wget -q https://datasets.imdbws.com/title.ratings.tsv.gz
-# wget -q https://datasets.imdbws.com/title.principals.tsv.gz
-# wget -q https://datasets.imdbws.com/name.basics.tsv.gz
+wget -q https://datasets.imdbws.com/title.basics.tsv.gz
+wget -q https://datasets.imdbws.com/title.ratings.tsv.gz
+wget -q https://datasets.imdbws.com/title.principals.tsv.gz
+wget -q https://datasets.imdbws.com/name.basics.tsv.gz
 
 # gunzip -f *.tsv.gz
 cd ..
