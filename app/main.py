@@ -26,21 +26,9 @@ def read_index(request: Request):
 def pong(request: Request):
     return {"response": "pong"}
 
-@app.get("/movies/", response_model=list[schemas.MovieOut])
+@app.get("/movies/", response_model=list[schemas.MovieSchema])
 def search_movies(title: str, db: Session = Depends(get_db)):
-    movies = crud.get_movie_by_title(db, title.strip('"'))
+    movies = crud.cache_get_movie_by_title(db, title.strip('"'))
     if not movies:
-        raise HTTPException(status_code=404, detail="Nessun film trovato")
-    
-    def format_movie(m):
-        return schemas.MovieOut(
-            id=m.id,
-            title=m.title,
-            year=m.year,
-            duration=m.duration,
-            rating=m.rating,
-            num_votes=m.num_votes,
-            directors=[d.strip() for d in m.directors.split(",")] if m.directors else [],
-            actors=[a.strip() for a in m.actors.split(",")] if m.actors else []
-        )
-    return [format_movie(m) for m in movies]
+        raise HTTPException(status_code=404, detail="No film found.")
+    return movies
