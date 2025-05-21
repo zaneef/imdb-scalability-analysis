@@ -27,6 +27,7 @@ def cache_get_movie_by_title(db: Session, title: str):
     cache_key = f"movie:{title.lower()}"
     cached = redis_client.get(cache_key)
     if cached:
+        print(f"CACHE HIT: {title.lower()}")
         return json.loads(cached)
 
     movies = db.query(models.Movie).filter(models.Movie.title.ilike(f"%{title}%")).limit(100).all()
@@ -44,7 +45,7 @@ def cache_get_movie_by_title(db: Session, title: str):
         redis_client.set(
             cache_key,
             json.dumps([m.model_dump() for m in schema_movies]),
-            ex=600
+            ex=21600
         )
         return [m.model_dump() for m in schema_movies]
     return None

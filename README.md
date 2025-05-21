@@ -1,7 +1,7 @@
 # IMDb Scalability Analysis Web App
 
 ## 📚 Project Overview
-This project was developed for the "Software Performance and Scalability" course and demonstrates the design, deployment, and performance analysis of a scalable web application. The system loads and serves movie data from the IMDb dataset through a FastAPI backend and a PostgreSQL database.
+This project was developed for the "Software Performance and Scalability" course and demonstrates the design, deployment, and performance analysis of a scalable web application. The system loads and serves movie data from the IMDb dataset through a FastAPI backend, a PostgreSQL database, and a Redis cache to improve performance under high concurrency.
 
 ---
 
@@ -14,7 +14,8 @@ imdb-scalability-analysis/
 │   ├── schemas.py                # Pydantic schemas for API
 │   ├── crud.py                   # Database access logic
 │   ├── database.py               # DB engine and session setup
-│   └── populate_db.py            # Loads IMDb TSV into DB
+│   ├── populate_db.py            # Loads IMDb TSV into DB
+|   └── redis_client.py           # Redis client
 │
 ├── data/                         # TSV files (downloaded at runtime)
 │   ├── title.basics.tsv
@@ -29,6 +30,11 @@ imdb-scalability-analysis/
 │   ├── movies.jmx                # JMeter test plan
 │   └── queries.csv               # 10k query dataset
 │
+|── jmt/
+|   |── project_raw.jmva          # JMT model without Redis cache 
+|   |── project_warmup.jmva       # JMT model with Redis cache
+|   └── images/                   # images used in the report
+|
 ├── Dockerfile                   # Dockerfile for the webapp container
 ├── docker-compose.yml           # Compose file to run app + db containers
 ├── requirements.txt             # Python dependencies
@@ -55,8 +61,9 @@ docker-compose up --build
 This will:
 - Download IMDb TSV datasets
 - Extract and load them into PostgreSQL
+- Start a Redis container
 - Launch the API server on http://localhost:8000
-
+- Warm up the Redis cache with the 5000 most-rated movies
 ---
 
 ## 🔍 API Overview
