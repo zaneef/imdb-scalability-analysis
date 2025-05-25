@@ -31,8 +31,6 @@ weights = [row[1] for row in rows]
 
 queries = random.choices(titles, weights=weights, k=10_000)
 
-with open("scripts/queries.json", "w", encoding="utf-8") as f:
-    json.dump(queries, f, ensure_ascii=False, indent=2)
 with open("scripts/queries.csv", "w", newline="", encoding="utf-8") as f:
     csv.writer(f).writerows([q] for q in queries)
 
