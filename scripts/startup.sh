@@ -19,9 +19,9 @@ exists=$(echo "$exists" | xargs)
 echo "Found $exists rows in 'movies' table."
 
 if echo "$exists" | grep -Eq '^[0-9]+$' && [ "$exists" -gt 100 ]; then
-  echo "✅ Database already populated. Skipping import."
+  echo "Database already populated. Skipping import."
 else
-  echo "🧱 Populating database..."
+  echo "Populating database..."
   python -m app.populate_db
 fi
 

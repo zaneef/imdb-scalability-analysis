@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+GET /movies,196,222,5,12053,"851,70","0,000%",",65822","124,98","0,09","194425,9"
+TOTAL,196,222,5,12053,"851,70","0,000%",",65822","124,98","0,09","194425,9"

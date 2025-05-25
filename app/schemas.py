@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List
 
-class MovieOut(BaseModel):
+class MovieSchema(BaseModel):
     id: str
     title: str
     year: int
@@ -12,4 +12,4 @@ class MovieOut(BaseModel):
     actors: List[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True

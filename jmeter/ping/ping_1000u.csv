@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+GET /ping,170639,15,1,497,"45,44","0,000%","570,80781","80,27","67,45","144,0"
+TOTAL,170639,15,1,497,"45,44","0,000%","570,80781","80,27","67,45","144,0"
