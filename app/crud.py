@@ -4,11 +4,16 @@ from .redis_client import redis_client
 from .schemas import MovieSchema
 
 import json
+import time
 
 def get_movie_by_title(db: Session, title: str):
     cache_key = title.lower()
 
-    movies = db.query(models.Movie).filter(models.Movie.title.ilike(f"%{ title }%")).limit(100).all()
+    start = time.time()
+    movies = db.query(models.Movie).filter(models.Movie.title.ilike(f"%{ title }%")).all()
+    end = time.time()
+    with open("db_logging.txt", "a") as fipo:
+        fipo.write(f"DB Elapsed time: {end - start:.6f} seconds\n")
 
     if movies:
         schema_movies = []
@@ -27,7 +32,6 @@ def cache_get_movie_by_title(db: Session, title: str):
     cache_key = f"movie:{title.lower()}"
     cached = redis_client.get(cache_key)
     if cached:
-        print(f"CACHE HIT: {title.lower()}")
         return json.loads(cached)
 
     movies = db.query(models.Movie).filter(models.Movie.title.ilike(f"%{title}%")).limit(100).all()
