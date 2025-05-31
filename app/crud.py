@@ -6,6 +6,8 @@ from .schemas import MovieSchema
 import json
 import time
 
+stats = {'total': 0, 'cached': 0}
+
 def get_movie_by_title(db: Session, title: str):
     cache_key = title.lower()
 
@@ -30,8 +32,10 @@ def get_movie_by_title(db: Session, title: str):
 
 def cache_get_movie_by_title(db: Session, title: str):
     cache_key = f"movie:{title.lower()}"
+    stats['total'] += 1
     cached = redis_client.get(cache_key)
     if cached:
+        stats['cached'] += 1
         return json.loads(cached)
 
     movies = db.query(models.Movie).filter(models.Movie.title.ilike(f"%{title}%")).limit(100).all()
