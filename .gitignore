@@ -176,3 +176,8 @@ cython_debug/
 *.tsv
 imdb_data.zip
 .db_populated
+jmeter/model_efficient
+jmeter/model_not_efficient
+jmter/ping
+jmeter/warmup
+jmt/images

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -35,10 +35,16 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
     volumes:
-      - ./app:/app/app
-      - ./scripts:/app/scripts
       - ./data:/app/data
     working_dir: /app
+    develop:
+      watch:
+        - action: sync+restart
+          path: app
+          target: /app/app
+        - action: sync+restart
+          path: scripts/startup.sh
+          target: /app/scripts/startup.sh
 
 volumes:
   imdb_data:
